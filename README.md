@@ -66,8 +66,8 @@ These passwords are for local testing only.
 
 ```bash
 npm test                # runs both suites below
-npm run test:smoke      # business logic and permissions on a clean database (185 checks)
-npm run test:http       # starts the site and checks pages, languages, login, booking, chat, support, permissions, security headers (164 checks)
+npm run test:smoke      # business logic and permissions on a clean database (186 checks)
+npm run test:http       # starts the site and checks pages, languages, login, booking, chat, support, permissions, security headers (167 checks)
 ```
 
 The manual acceptance tests TC-01 to TC-14 are described in Appendix G of the SRS.

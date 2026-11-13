@@ -181,14 +181,21 @@ async function main() {
   ok(a.status !== 200 && a.location.includes('/login'), 'без входа записаться нельзя');
 
   r = await get('/dashboard', { cookie: nanny });
-  const confirmForm = forms(r.text).find((f) => f.fields.action === 'confirm')!;
+  const confirmForm = forms(r.text).filter((f) => f.fields.action === 'confirm').sort((x, y) => Number(y.fields.bookingId) - Number(x.fields.bookingId))[0]!; // самая новая заявка = созданная в этом тесте
   ok(!!confirmForm, 'специалист видит заявку с кнопкой «Подтвердить»');
   a = await post('/dashboard', confirmForm, {}, { cookie: parent });
   ok(a.location.includes('msg=forbidden'), 'родитель не может подтвердить чужую заявку (forbidden)');
   a = await post('/dashboard', confirmForm, {}, { cookie: nanny });
   ok(a.location.includes('msg=updated'), 'специалист подтвердил запись');
   r = await get('/dashboard', { cookie: parent });
-  ok(r.text.includes('Подтверждена') && r.text.includes('Оставить отзыв'), 'родитель видит подтверждение и форму отзыва');
+  ok(r.text.includes('Подтверждена') && !r.text.includes('Оставить отзыв'), 'до завершения формы отзыва нет');
+  r = await get('/dashboard', { cookie: nanny });
+  const doneForm = forms(r.text).find((f) => f.fields.action === 'complete' && f.fields.bookingId === confirmForm.fields.bookingId)!;
+  ok(!!doneForm, 'специалист видит кнопку «Выполнено»');
+  a = await post('/dashboard', doneForm, {}, { cookie: nanny });
+  ok(a.location.includes('msg=updated'), 'специалист завершил запись');
+  r = await get('/dashboard', { cookie: parent });
+  ok(r.text.includes('Оставить отзыв'), 'после завершения родитель видит форму отзыва');
   const reviewForm = forms(r.text).find((f) => 'bookingId' in f.fields && f.html.includes('name="rating"'))!;
   a = await post('/dashboard', reviewForm, { rating: '5', text: 'Отличная няня, спасибо!' }, { cookie: parent });
   ok(a.location.includes('msg=reviewed'), 'родитель оставил отзыв');

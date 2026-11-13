@@ -377,7 +377,7 @@ export async function createReview(actor: Actor, bookingId: number, input: unkno
   if (!parsed.success) throw new ServiceError('invalid');
   const [b] = await db.select().from(bookings).where(eq(bookings.id, bookingId)).limit(1);
   if (!b || b.parentId !== actor.id) throw new ServiceError('not_found');
-  if (b.status !== 'confirmed' && b.status !== 'completed') throw new ServiceError('bad_state');
+  if (b.status !== 'completed') throw new ServiceError('bad_state');
   try {
     await db.insert(reviews).values({
       bookingId: b.id,

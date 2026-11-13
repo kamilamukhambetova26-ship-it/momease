@@ -145,7 +145,7 @@ export async function ParentView({ userId }: { userId: number }) {
                             <button className="btn small danger" type="submit">{t('dash.cancel')}</button>
                           </form>
                         )}
-                        {(b.status === 'confirmed' || b.status === 'completed') &&
+                        {b.status === 'completed' &&
                           (b.reviewId ? (
                             <span className="muted">{t('dash.reviewed')}</span>
                           ) : (

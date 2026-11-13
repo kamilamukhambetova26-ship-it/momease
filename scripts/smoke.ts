@@ -152,6 +152,8 @@ async function main() {
   await throwsCode(() => svc.createReview(asParent, booking.id, { rating: 5, text: 'рано' }), 'bad_state', 'отзыв до подтверждения невозможен');
   await throwsCode(() => svc.respondBooking(asNanny, booking.id, 'complete'), 'bad_state', 'нельзя завершить неподтверждённую запись');
   await svc.respondBooking(asNanny, booking.id, 'confirm');
+  await throwsCode(() => svc.createReview(asParent, booking.id, { rating: 5, text: 'до завершения' }), 'bad_state', 'отзыв по подтверждённой, но не завершённой записи невозможен');
+  await svc.respondBooking(asNanny, booking.id, 'complete');
   await throwsCode(() => svc.createReview(asParent2, booking.id, { rating: 5, text: 'чужая' }), 'not_found', 'чужую запись оценить нельзя');
   await throwsCode(() => svc.createReview(asParent, booking.id, { rating: 9, text: '' }), 'invalid', 'оценка вне 1–5');
   await svc.createReview(asParent, booking.id, { rating: 5, text: 'Отлично!' });
@@ -159,7 +161,6 @@ async function main() {
   const card = (await svc.listProviders({}))[0];
   ok(card.ratingCount === 1 && card.ratingAvg === 5, 'рейтинг в каталоге посчитан');
   ok((await svc.listReviews(provider!.id))[0].parentName === 'Асель', 'в отзыве только имя без фамилии');
-  await svc.respondBooking(asNanny, booking.id, 'complete');
   await svc.cancelBooking(asParent, (await svc.createBooking(asParent, slots[1].id, d1)).id);
   ok((await svc.listSlotsForDate(provider!.id, d0)).every((s) => !s.taken), 'после отмены и завершения слоты свободны');
   ok((await svc.listParentBookings(parent.id)).length === 2, 'родитель видит свои записи');
@@ -267,7 +268,10 @@ async function main() {
   ok((await nt.listNotifications(parent3.id)).some((n) => n.type === 'report_closed'), 'автор жалобы получил уведомление');
 
   // отзыв скрывается по жалобе и уходит из рейтинга
-  await svc.createReview(asParent, b4.id, { rating: 1, text: 'грубый текст' });
+  const b5 = await svc.createBooking(asParent, tueSlots[0].id, addDays(tue, 14));
+  await svc.respondBooking(asN2, b5.id, 'confirm');
+  await svc.respondBooking(asN2, b5.id, 'complete');
+  await svc.createReview(asParent, b5.id, { rating: 1, text: 'грубый текст' });
   ok((await svc.listProviders({ q: 'Динара' }))[0].ratingCount === 1, 'отзыв учтён в рейтинге');
   const rev = (await svc.listReviews(n2p.id))[0];
   await reps.createReport(asN2, { targetType: 'review', targetId: rev.id, reason: 'inappropriate' });

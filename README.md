@@ -104,3 +104,6 @@ scripts/                migrate, seed, tests
 ## Credits
 
 Built with open-source libraries (Next.js, React, Drizzle ORM, jose, bcryptjs, zod, nodemailer, pg, PGlite), used under their licences. No templates or UI kits were copied.
+## Demo Video
+
+Watch the MomEase prototype demonstration here: [Demo Video](https://astanait-my.sharepoint.com/:v:/r/personal/240720_astanait_edu_kz/_layouts/15/stream.aspx?id=%2Fpersonal%2F240720%5Fastanait%5Fedu%5Fkz%2FDocuments%2FTeam04%5FFP%5FDemo%2Emp4%2Emov&share=cQr%5FPeyUouQpSIGdJxnpRTkREgUC6CeAWXJLxvK0qZBHNaztWg)

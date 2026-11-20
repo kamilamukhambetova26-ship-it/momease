@@ -6,7 +6,7 @@ A web marketplace prototype where parents in Astana find and book nannies, tutor
 
 Course project, Team 04, group ITM-2402. The prototype runs on localhost only and is not deployed publicly. It uses invented data and no real payments.
 
-- Demo video (up to 3 min): `<(https://astanait-my.sharepoint.com/:v:/r/personal/240720_astanait_edu_kz/_layouts/15/stream.aspx?id=%2Fpersonal%2F240720%5Fastanait%5Fedu%5Fkz%2FDocuments%2FTeam04%5FFP%5FDemo%2Emp4%2Emov&share=cQr%5FPeyUouQpSIGdJxnpRTkREgUC6CeAWXJLxvK0qZBHNaztWg)>`
+- Demo video (up to 3 min): `<(https://astanait-my.sharepoint.com/:v:/r/personal/240720_astanait_edu_kz/_layouts/15/stream.aspx?id=%2Fpersonal%2F240720%5Fastanait%5Fedu%5Fkz%2FDocuments%2FTeam04%5FFP%5FDemo%2Emp4&share=cQpfunPD3YA1Spg8ZBIYTbUREgUC3mfUmMqCE7OiLKrLt2wXog)>`
 - SRS report: see the course submission.)
 
 ## Technology stack
